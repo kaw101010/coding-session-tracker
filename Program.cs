@@ -10,8 +10,8 @@ class Program
                 .Centered()
                 .Color(Color.Yellow));
         bool flag = false;
-        bool codingNow = false;
         var databaseConnector = new DatabaseConnector();
+        bool codingNow = SessionManager.IsUserCodingCurrently(databaseConnector);
         databaseConnector.OpenConnection();
         if (databaseConnector.DatabaseNotConnected()) {
             AnsiConsole.MarkupLine("[red]Error connecting to database...[/]");
@@ -29,10 +29,11 @@ class Program
                 "Quit"];
             var choice = AnsiConsole.Prompt(
                         new SelectionPrompt<string>()
-                            .Title("What's your [green]favorite fruit[/]?")
+                            .Title("What do you want to do?")
                             .PageSize(10)
-                            .MoreChoicesText("[grey](Move up and down to reveal more fruits)[/]")
+                            .MoreChoicesText("[grey](Move up and down to reveal more choices)[/]")
                             .AddChoices(choices));
+                        
             switch (choices.IndexOf(choice)) {
                 case (int)Options.StartOrEndSession:
                     SessionManager.ToggleCodingSession(databaseConnector, codingNow);
