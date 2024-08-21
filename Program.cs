@@ -15,7 +15,7 @@ class Program
         bool codingNow = SessionManager.IsUserCodingCurrently(databaseConnector);
         databaseConnector.OpenConnection();
         if (databaseConnector.DatabaseNotConnected()) {
-            AnsiConsole.MarkupLine("[red]Error connecting to database...[/]");
+            UserInputValidator.DisplayMessage("Error connecting to database...");
             return;
         }
 
@@ -59,7 +59,7 @@ class Program
                     AnsiConsole.Write(rule);
                     break;
                 default:
-                    AnsiConsole.MarkupLine("[red]Enter a valid option please[/]");
+                    UserInputValidator.DisplayMessage("Enter a valid option please!");
                     break;
             }
         }

@@ -19,7 +19,7 @@ namespace coding_tracker.Models
                     return DateOnly.Parse(date);
                 }
                 else {
-                    UserInputValidator.InvalidInputMessage("Invalid Date Format");
+                    UserInputValidator.DisplayMessage("Invalid Date Format!");
                 }
             }
         }

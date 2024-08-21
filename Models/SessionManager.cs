@@ -29,7 +29,7 @@ namespace coding_tracker.Models
                                 { "comment", comments }
                             };
                 dbConnector.UpdateRecordAndEndSession(columnsToUpdate);
-                AnsiConsole.MarkupLine("[red]Session Complete![/]\n");
+                UserInputValidator.DisplayMessage("[red]Session Complete![/]\n");
             }
             else {
                 // start a user sesh

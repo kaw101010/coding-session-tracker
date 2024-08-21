@@ -9,9 +9,9 @@ namespace coding_tracker.Models
             return DateOnly.TryParse(date, out DateOnly d);
         }
 
-        public static void InvalidInputMessage(string error)
+        public static void DisplayMessage(string message)
         {
-            AnsiConsole.MarkupLine($"[red]{error}![/]");
+            AnsiConsole.MarkupLine($"[red]{message}[/]");
             return;
         }
 
