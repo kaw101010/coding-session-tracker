@@ -1,4 +1,5 @@
 using System.Configuration;
+using System.Data;
 using System.Data.SQLite;
 using Dapper;
 using Spectre.Console;
@@ -27,7 +28,6 @@ namespace coding_tracker.Models
             var conn = this.Connection;
             string createTableCommandSQL = $@"CREATE TABLE IF NOT EXISTS {this.table_name} (
                                 ID INTEGER PRIMARY KEY,
-                                DATE TEXT NOT NULL,
                                 START_TIME TEXT NOT NULL,
                                 END_TIME TEXT,
                                 DURATION TEXT,
@@ -51,21 +51,19 @@ namespace coding_tracker.Models
             return queryCurrentSession.Count > 0;
         }
 
-        public void InsertRecordIntoTable(string date,
-                                            string start_time,
+        public void InsertRecordIntoTable(string start_time,
                                             string? end_time,
                                             string? duration,
                                             string? additional_comments) {
             string getMaxID = $@"SELECT IFNULL(MAX(ID), 0) FROM {this.table_name}";
-            int maxIdQuery = Connection.Query<int>(getMaxID).Single();
+            int maxIdQuery = Connection.ExecuteScalar<int>(getMaxID);
             int maxId = maxIdQuery == 0 ? assignedId : maxIdQuery;
-            string insertRecordCommandSQL = $@"INSERT INTO {this.table_name} (ID, DATE, 
+            string insertRecordCommandSQL = $@"INSERT INTO {this.table_name} (ID, 
                                         START_TIME, END_TIME, DURATION, COMMENT) 
-                                   VALUES (@Id, @Date, @StartTime, @EndTime, @Duration, @AdditionalComments)";
+                                   VALUES (@Id, @StartTime, @EndTime, @Duration, @AdditionalComments)";
 
             var parameters = new {
                         Id = ++maxId,
-                        Date = date,
                         StartTime = start_time,
                         EndTime = end_time,
                         Duration = duration,
@@ -90,13 +88,13 @@ namespace coding_tracker.Models
         foreach (var column in columnsToUpdate)
         {
             if (column.Key == "END_TIME") {
-                currSessionEndTime = (string)column.Value;
+                currSessionEndTime = column.Value.ToString() ?? "";
             }
             setClauses.Add($"{column.Key} = @{column.Key}");
             parameters.Add($"@{column.Key}", column.Value);
         }
         setClauses.Add($"{"DURATION = @DURATION"}");
-        var duration = SessionManager.GetTimeSpan(
+        var duration = CodingSession.GetTimeSpan(
             DateTime.Parse(currSessionStartTime),
             DateTime.Parse(currSessionEndTime));
         parameters.Add("@DURATION", duration);
@@ -104,6 +102,28 @@ namespace coding_tracker.Models
         string updateSessionCommandSQL = $@"UPDATE {this.table_name} SET {string.Join(", ", setClauses)} WHERE Id = @Id";
         parameters.Add("@Id", currSessionId);
         this.Connection.Execute(updateSessionCommandSQL, parameters);
+        }
+
+        public List<CodingSession> GetSessionsOnDate(DateOnly date)
+        {
+            string getSessionsOnDateCommand = $"SELECT * FROM {this.table_name} WHERE START_TIME LIKE @DATE";
+            var parameters = new DynamicParameters();
+            parameters.Add("@DATE", $"%{date:dd-MM-yyyy}%");
+            var codingSessions = this.Connection.Query(
+                getSessionsOnDateCommand, parameters, commandType: CommandType.Text)
+                .Select(x => 
+                {
+                    // manually map some properties
+                    var session = new CodingSession
+                    {
+                        Duration = x.DURATION,
+                        Comments = x.COMMENT
+                    };
+                    return session;
+                }
+                )
+                .ToList();
+            return codingSessions;
         }
     }
 }

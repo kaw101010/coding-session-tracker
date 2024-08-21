@@ -9,15 +9,15 @@ class Program
                 new FigletText("CODING TRACKER")
                 .Centered()
                 .Color(Color.Yellow));
-        bool flag = false;
         var databaseConnector = new DatabaseConnector();
+        databaseConnector.CreateTable();
+        bool flag = false;
         bool codingNow = SessionManager.IsUserCodingCurrently(databaseConnector);
         databaseConnector.OpenConnection();
         if (databaseConnector.DatabaseNotConnected()) {
             AnsiConsole.MarkupLine("[red]Error connecting to database...[/]");
             return;
         }
-        databaseConnector.CreateTable();
 
         while (!flag) {
             List<string> choices = [
@@ -47,6 +47,9 @@ class Program
                     break;
                 case (int)Options.DeleteSession:
                     SessionManager.DeleteSession(databaseConnector);
+                    break;
+                case (int)Options.ViewSession:
+                    SessionManager.ViewSession(databaseConnector);
                     break;
                 case (int)Options.Quit:
                     flag = true;
