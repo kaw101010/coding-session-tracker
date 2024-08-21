@@ -22,8 +22,7 @@ namespace coding_tracker.Models
             if (isUserCoding) {
                 // end current user session
                 DateTime EndSessionDateTime = DateTime.Now;
-                string? comments = AnsiConsole.Prompt(new TextPrompt<string>(
-                    "Add some [green]comments about this session[/]: "));
+                string comments = SessionPrompt.PromptCommentsFromUser();
                 var columnsToUpdate = new Dictionary<string, object>
                             {
                                 { "END_TIME", EndSessionDateTime },

@@ -23,5 +23,11 @@ namespace coding_tracker.Models
                 }
             }
         }
+
+        public static string PromptCommentsFromUser() {
+            string? userComments = AnsiConsole.Prompt(new TextPrompt<string>(
+                    "Add some [green]comments about this session[/]: "));
+            return userComments ?? "";
+        }
     }
 }
