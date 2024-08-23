@@ -5,12 +5,7 @@ class Program
 {
     static void Main(string[] args)
     {
-        var panel = new Panel(new FigletText("CODING TRACKER")
-                                .Centered()
-                                .Color(Color.Yellow));
-        panel.Border(BoxBorder.Double);
-        panel.BorderColor(Color.Yellow);
-        AnsiConsole.Write(panel);
+        DataVisualController.DisplayHeading();
         var databaseConnector = new DatabaseConnector();
         databaseConnector.CreateTable();
         bool flag = false;
@@ -30,11 +25,11 @@ class Program
                 "View all coding session for a day",
                 "Quit"];
             var choice = AnsiConsole.Prompt(
-                        new SelectionPrompt<string>()
-                            .Title("What do you want to do?")
-                            .PageSize(10)
-                            .MoreChoicesText("[grey](Move up and down to reveal more choices)[/]")
-                            .AddChoices(choices));
+                new SelectionPrompt<string>()
+                    .Title("[green bold]What do you want to do?[/]")
+                    .PageSize(10)
+                    .MoreChoicesText("[grey](Move up and down to reveal more choices)[/]")
+                    .AddChoices(choices));
                         
             switch (choices.IndexOf(choice)) {
                 case (int)Options.StartOrEndSession:

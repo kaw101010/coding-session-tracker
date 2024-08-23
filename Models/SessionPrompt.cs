@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-using System.Runtime.InteropServices;
 using Spectre.Console;
 
 namespace coding_tracker.Models
