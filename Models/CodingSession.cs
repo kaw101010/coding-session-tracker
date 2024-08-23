@@ -3,7 +3,7 @@ namespace coding_tracker.Models {
     {
         public int Id { get; }
         public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
+        public DateTime? EndTime { get; set; }
         public string? Duration { get; set; }
         public string? Comments { get; set; }
         private static int nextId = 111;
@@ -11,8 +11,8 @@ namespace coding_tracker.Models {
         public CodingSession() {
             this.Id = ++nextId;
             this.StartTime = DateTime.Now;
-            this.EndTime = DateTime.Now;
-            this.Duration = GetTimeSpan(StartTime, EndTime).ToString();
+            this.EndTime = null;
+            this.Duration = null;
             this.Comments = null;
         }
 

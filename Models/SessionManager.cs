@@ -64,6 +64,9 @@ namespace coding_tracker.Models
         {
             // visualize all coding sessions for a day in a table
             // use spectre
+            DateOnly dt = SessionPrompt.PromptDateFromUser();
+            List<CodingSession> codeSessions = dbConnector.GetSessionsOnDate(dt);
+            DataVisualController.VisualizeCodingSessionsInTable(codeSessions);
         }
     }
 }

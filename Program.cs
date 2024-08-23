@@ -5,10 +5,12 @@ class Program
 {
     static void Main(string[] args)
     {
-        AnsiConsole.Write(
-                new FigletText("CODING TRACKER")
-                .Centered()
-                .Color(Color.Yellow));
+        var panel = new Panel(new FigletText("CODING TRACKER")
+                                .Centered()
+                                .Color(Color.Yellow));
+        panel.Border(BoxBorder.Double);
+        panel.BorderColor(Color.Yellow);
+        AnsiConsole.Write(panel);
         var databaseConnector = new DatabaseConnector();
         databaseConnector.CreateTable();
         bool flag = false;

@@ -108,7 +108,7 @@ namespace coding_tracker.Models
         {
             string getSessionsOnDateCommand = $"SELECT * FROM {this.table_name} WHERE START_TIME LIKE @DATE";
             var parameters = new DynamicParameters();
-            parameters.Add("@DATE", $"%{date:dd-MM-yyyy}%");
+            parameters.Add("@DATE", $"{date:dd-MM-yyyy}%");
             var codingSessions = this.Connection.Query(
                 getSessionsOnDateCommand, parameters, commandType: CommandType.Text)
                 .Select(x => 
@@ -116,6 +116,8 @@ namespace coding_tracker.Models
                     // manually map some properties
                     var session = new CodingSession
                     {
+                        StartTime = DateTime.Parse(x.START_TIME),
+                        EndTime = DateTime.Parse(x.END_TIME),
                         Duration = x.DURATION,
                         Comments = x.COMMENT
                     };
