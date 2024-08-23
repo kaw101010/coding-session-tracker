@@ -51,9 +51,9 @@ namespace coding_tracker.Models
             return queryCurrentSession.Count > 0;
         }
 
-        public void InsertRecordIntoTable(string start_time,
-                                            string? end_time,
-                                            string? duration,
+        public void InsertRecordIntoTable(DateTime start_time,
+                                            DateTime? end_time,
+                                            TimeSpan? duration,
                                             string? additional_comments) {
             string getMaxID = $@"SELECT IFNULL(MAX(ID), 0) FROM {this.table_name}";
             int maxIdQuery = Connection.ExecuteScalar<int>(getMaxID);
@@ -64,10 +64,10 @@ namespace coding_tracker.Models
 
             var parameters = new {
                         Id = ++maxId,
-                        StartTime = start_time,
-                        EndTime = end_time,
-                        Duration = duration,
-                        AdditionalComments = additional_comments
+                        StartTime = start_time.ToString(),
+                        EndTime = end_time ?? null,
+                        Duration = duration ?? null,
+                        AdditionalComments = additional_comments ?? null
                     };
             this.Connection.Execute(insertRecordCommandSQL, parameters);
         }
@@ -117,10 +117,14 @@ namespace coding_tracker.Models
                     .Select(x => 
                     {
                         // manually map some properties
+                        // duration is timespan
+                        x.DURATION = (x.DURATION == null) ? null : TimeSpan.Parse(x.DURATION);
+                        x.END_TIME = (x.END_TIME == null) ? null : DateTime.Parse(x.END_TIME);
+                        x.START_TIME = DateTime.Parse(x.START_TIME);
                         var session = new CodingSession
                         {
-                            StartTime = DateTime.Parse(x.START_TIME),
-                            EndTime = x.END_TIME != null ? DateTime.Parse(x.END_TIME) : null,
+                            StartTime = x.START_TIME,
+                            EndTime = x.END_TIME,
                             Duration = x.DURATION,
                             Comments = x.COMMENT
                         };

@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using Spectre.Console;
 
 namespace coding_tracker.Models
@@ -7,11 +8,11 @@ namespace coding_tracker.Models
         public static DateOnly PromptDateFromUser()
         {
             while (true) {
-                string? date = AnsiConsole.Prompt(new TextPrompt<string>(
-                            "Enter the [green]date[/] of the coding session [green](yyyy-mm-dd)[/] (PRESS ENTER FOR TODAY): ")
+                string date = AnsiConsole.Prompt(new TextPrompt<string>(
+                            "Enter the [green]date[/] of the coding session [green](yyyy-mm-dd)[/] (Press ENTER for today): ")
                             .AllowEmpty());
                 if (string.IsNullOrEmpty(date)) {
-                    date = DateTime.Now.ToString("yyyy-MM-dd");
+                    date = DateOnly.FromDateTime(DateTime.Now).ToString();
                 }
                 if (UserInputValidator.IsValidInputDate(date)) {
                     return DateOnly.Parse(date);
@@ -25,7 +26,23 @@ namespace coding_tracker.Models
         public static string PromptCommentsFromUser() {
             string? userComments = AnsiConsole.Prompt(new TextPrompt<string>(
                     "Add some [green]comments about this session[/]: "));
-            return userComments ?? "";
+            return userComments ?? "--None--";
+        }
+
+        public static TimeOnly PromptTimeFromUser(DateOnly sessionDate, bool promptStartTimeToggle = true) {
+            string timing = promptStartTimeToggle ? "start" : "end";
+            while (true) {
+                string? start_time = AnsiConsole.Prompt(new TextPrompt<string>(
+                            $"Enter the [green]{timing} time[/] of the coding session [green](hh:mm)[/]: ")
+                            .AllowEmpty());
+                if (UserInputValidator.IsValidInputTime(start_time) && 
+                    UserInputValidator.IsValidInputDateAndTime(sessionDate, TimeOnly.Parse(start_time))) {
+                    return TimeOnly.Parse(start_time);
+                }
+                else {
+                    UserInputValidator.DisplayMessage("Invalid Time Format!");
+                }
+            }
         }
     }
 }

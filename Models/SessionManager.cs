@@ -34,7 +34,8 @@ namespace coding_tracker.Models
             else {
                 // start a user sesh
                 DateTime currDateTime = DateTime.Now;
-                dbConnector.InsertRecordIntoTable(currDateTime.ToString(), null, null, null);
+                dbConnector.InsertRecordIntoTable(currDateTime, null, null, null);
+                UserInputValidator.DisplayMessage("[red]Session Started, have fun coding![/]\n");
             }
         }
 
@@ -44,8 +45,16 @@ namespace coding_tracker.Models
             // store in db
             DateOnly dt = SessionPrompt.PromptDateFromUser();
             List<CodingSession> codeSessions = dbConnector.GetSessionsOnDate(dt);
-            codeSessions.ForEach(x => System.Console.WriteLine(x.Duration));
-            // visualize data in table
+            DataVisualController.VisualizeCodingSessionsInTable(codeSessions, dt);
+            TimeOnly startTime = SessionPrompt.PromptTimeFromUser(promptStartTimeToggle: true, sessionDate: dt);
+            DateTime fullStartTime =DateTime.Parse($"{dt} {startTime}");
+            TimeOnly endTime = SessionPrompt.PromptTimeFromUser(promptStartTimeToggle: false, sessionDate: dt);
+            DateTime fullEndTime =DateTime.Parse($"{dt} {endTime}");
+            string comments = SessionPrompt.PromptCommentsFromUser();
+            dbConnector.InsertRecordIntoTable(fullStartTime, fullEndTime, 
+                                                CodingSession.GetTimeSpan(fullStartTime, fullEndTime),
+                                                comments);
+            UserInputValidator.DisplayMessage("[red]Session Logged! Well done![/]\n");
         }
 
         public static void UpdateSession(DatabaseConnector dbConnector)
@@ -66,7 +75,7 @@ namespace coding_tracker.Models
             // use spectre
             DateOnly dt = SessionPrompt.PromptDateFromUser();
             List<CodingSession> codeSessions = dbConnector.GetSessionsOnDate(dt);
-            DataVisualController.VisualizeCodingSessionsInTable(codeSessions);
+            DataVisualController.VisualizeCodingSessionsInTable(codeSessions, dt);
         }
     }
 }

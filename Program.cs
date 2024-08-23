@@ -28,7 +28,7 @@ class Program
                 new SelectionPrompt<string>()
                     .Title("[green bold]What do you want to do?[/]")
                     .PageSize(10)
-                    .MoreChoicesText("[grey](Move up and down to reveal more choices)[/]")
+                    .MoreChoicesText("[grey](Move up and down to reveal more options)[/]")
                     .AddChoices(choices));
                         
             switch (choices.IndexOf(choice)) {
