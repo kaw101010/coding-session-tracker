@@ -2,11 +2,11 @@ namespace coding_tracker.Models
 {
     public class SessionManager
     {
-        public static bool IsUserCodingCurrently(DatabaseConnector dbConnector) {
+        public bool IsUserCodingCurrently(DatabaseConnector dbConnector) {
             return dbConnector.HasIncompleteRecords();
         }
 
-        public static void ToggleCodingSession(DatabaseConnector dbConnector, bool isUserCoding)
+        public void ToggleCodingSession(DatabaseConnector dbConnector, bool isUserCoding)
         {
             if (isUserCoding) {
                 // end current user session
@@ -35,7 +35,7 @@ namespace coding_tracker.Models
             }
         }
 
-        public static void LogSession(DatabaseConnector dbConnector)
+        public void LogSession(DatabaseConnector dbConnector)
         {
             // prompt user for date, time, and comments abt session
             // store in db
@@ -54,7 +54,7 @@ namespace coding_tracker.Models
             DataVisualController.DisplayMessage("[red]Session Logged! Well done![/]\n");
         }
 
-        public static void UpdateSession(DatabaseConnector dbConnector)
+        public void UpdateSession(DatabaseConnector dbConnector)
         {
             // ask user for date, show all times and ask which time
             // update the value in db
@@ -82,7 +82,7 @@ namespace coding_tracker.Models
             DataVisualController.DisplayMessage("[red]Session Updated![/]\n");
         }
 
-        public static void DeleteSession(DatabaseConnector dbConnector)
+        public void DeleteSession(DatabaseConnector dbConnector)
         {
             // ask user for date, show all times and ask which time, or times
             // delete all values in db
@@ -102,7 +102,7 @@ namespace coding_tracker.Models
             DataVisualController.DisplayMessage("[red]Session Deleted![/]\n");
         }
 
-        public static void ViewSession(DatabaseConnector dbConnector)
+        public void ViewSession(DatabaseConnector dbConnector)
         {
             // visualize all coding sessions for a day in a table
             // use spectre
