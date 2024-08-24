@@ -1,0 +1,1 @@
+C:\Users\Krish\Desktop\PROJECT\c-sharp-proj\coding-tracker\bin\Release\net8.0\win-x64\publish\coding-tracker.exe

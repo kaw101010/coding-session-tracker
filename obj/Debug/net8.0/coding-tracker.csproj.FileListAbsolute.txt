@@ -51,3 +51,4 @@ C:\Users\Krish\Desktop\PROJECT\c-sharp-proj\coding-tracker\bin\Debug\net8.0\runt
 C:\Users\Krish\Desktop\PROJECT\c-sharp-proj\coding-tracker\bin\Debug\net8.0\runtimes\win-x86\native\SQLite.Interop.dll
 C:\Users\Krish\Desktop\PROJECT\c-sharp-proj\coding-tracker\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Diagnostics.EventLog.Messages.dll
 C:\Users\Krish\Desktop\PROJECT\c-sharp-proj\coding-tracker\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Diagnostics.EventLog.dll
+C:\Users\Krish\Desktop\PROJECT\c-sharp-proj\coding-tracker\obj\Debug\net8.0\coding-tracker.sourcelink.json
