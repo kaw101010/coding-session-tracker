@@ -17,7 +17,7 @@ namespace coding_tracker.Models
                                 { "END_TIME", EndSessionDateTime },
                                 { "comment", comments }
                             };
-                dbConnector.UpdateRecordAndEndSession(columnsToUpdate);
+                dbConnector.UpdateRecordAndEndRunningSession(columnsToUpdate);
                 // simulate a waiting time of 250 ms
                 var t = Task.Run(async delegate
                         {
@@ -58,6 +58,15 @@ namespace coding_tracker.Models
         {
             // ask user for date, show all times and ask which time
             // update the value in db
+            DateOnly dt = SessionPrompt.PromptDateFromUser();
+            List<CodingSession> codeSessions = dbConnector.GetSessionsOnDate(dt);
+            DataVisualController.VisualizeCodingSessionsInTable(codeSessions, dt);
+            if (codeSessions.Count < 1)
+            {
+                return;
+            }
+            int IdOfSession = SessionPrompt.PromptIdOfSession(codeSessions, updateIfTrueElseDelete: false);
+            DataVisualController.DisplayMessage("[red]Session Updated![/]\n");
         }
 
         public static void DeleteSession(DatabaseConnector dbConnector)
@@ -73,6 +82,7 @@ namespace coding_tracker.Models
             }
             int IdOfSession = SessionPrompt.PromptIdOfSession(codeSessions, updateIfTrueElseDelete: false);
             dbConnector.DeleteRecordFromTable(IdOfSession);
+            DataVisualController.DisplayMessage("[red]Session Deleted![/]\n");
         }
 
         public static void ViewSession(DatabaseConnector dbConnector)

@@ -72,7 +72,7 @@ namespace coding_tracker.Models
             this.Connection.Execute(insertRecordCommandSQL, parameters);
         }
 
-        public void UpdateRecordAndEndSession(Dictionary<string, object> columnsToUpdate)
+        public void UpdateRecordAndEndRunningSession(Dictionary<string, object> columnsToUpdate)
         {
         var idForUpdateCommand = $@"SELECT ID, START_TIME FROM {this.table_name} WHERE DURATION is NULL AND END_TIME is NULL";
         var queryCurrentSession = this.Connection.Query(idForUpdateCommand).ToList();
@@ -139,9 +139,21 @@ namespace coding_tracker.Models
 
         public void DeleteRecordFromTable(int sessionID) {
             var conn = this.Connection;
-            var deleteRecordCommandSQL = @$"DELETE FROM {this.table_name} WHERE ID = {sessionID}";
-            conn.Execute(deleteRecordCommandSQL);
-            Console.WriteLine("Session Deleted!");
+            var deleteRecordCommandSQL = @$"DELETE FROM {this.table_name} WHERE ID=@SESSION_ID";
+            var parameters = new DynamicParameters();
+            parameters.Add("@SESSION_ID", sessionID);
+            conn.Execute(deleteRecordCommandSQL, parameters);
+        }
+
+        public void UpdateRecordInTableWithID(int sessionID, DateTime newStartTime, DateTime newEndTime) {
+            var conn = this.Connection;
+            var updateRecordCommandSQL = @$"UPDATE {this.table_name} SET START_TIME=@START AND END_TIME=@END
+                                            WHERE ID=@ID";
+            var parameters = new DynamicParameters();
+            parameters.Add("@START", newStartTime);
+            parameters.Add("@END", newEndTime);
+            parameters.Add("@ID", sessionID);
+            conn.Execute(updateRecordCommandSQL, parameters);
         }
     }
 }

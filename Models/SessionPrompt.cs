@@ -1,5 +1,3 @@
-using System.ComponentModel;
-using Dapper;
 using Spectre.Console;
 
 namespace coding_tracker.Models
@@ -48,10 +46,10 @@ namespace coding_tracker.Models
 
         public static int PromptIdOfSession(List<CodingSession> sessions, bool updateIfTrueElseDelete = true) {
             while (true) {
-                string? sessionID = AnsiConsole.Prompt(new TextPrompt<string>(
-                            $@"Enter the [green]ID[/] of the coding session you want to 
-                            {(updateIfTrueElseDelete ? "update": "delete")}: ")
-                            .AllowEmpty());
+                string? sessionID = AnsiConsole.Prompt<string>(new TextPrompt<string>(
+                                            @"Enter the [green]ID[/] of the coding session you want to " +
+                                            $"{(updateIfTrueElseDelete ? "update" : "delete")}: ")
+                                            .AllowEmpty());
                 if (UserInputValidator.IsSessionIdValid(sessionID)) {
                     int intSessionID = int.Parse(sessionID);
                     IEnumerable<int> SearchQuery = UserInputValidator.IdInSessionsList(sessions, intSessionID);
