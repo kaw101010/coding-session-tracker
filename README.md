@@ -3,7 +3,6 @@
 ## Table of Contents
 * [Description](#description)
 * [Setup](#setup)
-* [Features](#features)
 
 ## Description
 Track your coding sessions in the terminal with this console application. This CLI tool allows developers to monitor and track their coding sessions. The application provides a very user-friendly console UI. All session data is stored in a SQLite database, ensuring that your data is persistent and easily accessible.
