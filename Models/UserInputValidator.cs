@@ -29,7 +29,7 @@ namespace coding_tracker.Models
         {
             IEnumerable<int> intSearchQuery = 
                     from s in sessions
-                    where s.Id == idToSearch
+                    where s.Id == idToSearch && s.Duration != null
                     select s.Id;
             return intSearchQuery;
         }

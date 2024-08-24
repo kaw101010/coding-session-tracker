@@ -69,7 +69,7 @@ namespace coding_tracker.Models
             DataVisualController.VisualizeCodingSessionsInTable(codeSessions, dt);
             if (codeSessions.Count < 1)
             {
-                return;   
+                return;
             }
             int IdOfSession = SessionPrompt.PromptIdOfSession(codeSessions, updateIfTrueElseDelete: false);
             dbConnector.DeleteRecordFromTable(IdOfSession);
