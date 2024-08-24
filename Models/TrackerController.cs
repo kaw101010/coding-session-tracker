@@ -25,17 +25,12 @@ namespace coding_tracker.Models
                     "Delete a coding session",
                     "View all coding session for a day",
                     "Quit"];
-                var choice = AnsiConsole.Prompt(
-                    new SelectionPrompt<string>()
-                        .Title("\n[green bold]What do you want to do?[/]")
-                        .PageSize(10)
-                        .MoreChoicesText("[grey](Move up and down to reveal more options)[/]")
-                        .AddChoices(choices));
+                string userChoice = DataVisualController.DisplayChoicesToUser(choices);
 
-                if (choice != "Quit") {
-                    DataVisualController.RenderSelectedChoice(choice);
+                if (userChoice != "Quit") {
+                    DataVisualController.RenderSubheading(userChoice);
                 }
-                switch (choices.IndexOf(choice)) {
+                switch (choices.IndexOf(userChoice)) {
                     case (int)Options.StartOrEndSession:
                         sessionManager.ToggleCodingSession(databaseConnector, codingNow);
                         codingNow = !codingNow;
@@ -53,7 +48,7 @@ namespace coding_tracker.Models
                         sessionManager.ViewSession(databaseConnector);
                         break;
                     case (int)Options.Quit:
-                        DataVisualController.RenderSelectedChoice("GoodBye :)");
+                        DataVisualController.RenderSubheading("GoodBye :)");
                         flag = true;
                         break;
                 }

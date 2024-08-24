@@ -61,7 +61,6 @@ namespace coding_tracker.Models
                         return -1;
                     }
                     else {
-                        System.Console.WriteLine(sessions.Count - SearchQuery.Count());
                         DataVisualController.DisplayMessage("[red]Session ID does not exist or session is still running![/]");
                     }
                 }

@@ -33,7 +33,7 @@ namespace coding_tracker.Models
                 table.AddRow(
                                 // show id in blue if session is still going on, else show
                                 $"[{(session.EndTime != null ? "red" : "blue")}]{session.Id}[/]",
-                                session.StartTime.ToString(_dateTimeFormat),
+                                $"[{(session.EndTime != null ? "":"blue")}]{session.StartTime.ToString(_dateTimeFormat)}[/]",
                                 session.EndTime?.ToString(_dateTimeFormat) ?? "[blue]...Session hasn't ended[/]", 
                                 session.Duration?.ToString("h\\:mm") ?? "[blue]...Session hasn't ended[/]",
                                 (session.Comments ?? "[blue]N/A[/]").ToString());
@@ -41,7 +41,7 @@ namespace coding_tracker.Models
             AnsiConsole.Write(table.Centered());
         }
 
-        public static void RenderSelectedChoice(string selectedChoice)
+        public static void RenderSubheading(string selectedChoice)
         {
             var rule = new Rule($"\n[yellow bold]{selectedChoice}[/]\n");
             rule.RuleStyle(new Style(Color.Yellow, background: Color.Green, decoration: Decoration.Invert));
@@ -57,6 +57,16 @@ namespace coding_tracker.Models
             panel.Border(BoxBorder.Double);
             panel.BorderColor(Color.Yellow);
             AnsiConsole.Write(panel);
+        }
+
+        public static string DisplayChoicesToUser(List<string> choices) {
+            string choice = AnsiConsole.Prompt(
+                    new SelectionPrompt<string>()
+                    .Title("\n[green bold]What do you want to do?[/]")
+                    .PageSize(10)
+                    .MoreChoicesText("[grey](Move up and down to reveal more options)[/]")
+                    .AddChoices(choices));
+            return choice;
         }
 
         public static void DisplayMessage(string message)

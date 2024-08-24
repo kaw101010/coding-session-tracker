@@ -152,24 +152,19 @@ namespace coding_tracker.Models
                                             string newDuration,
                                             string comments) {
             var conn = this.Connection;
-            var updateRecordStartTimeCommandSQL = @$"UPDATE {this.table_name} SET START_TIME=@START
+            var updateRecordCommandSQL = @$"UPDATE {this.table_name} SET 
+                                                    START_TIME=@START,
+                                                    END_TIME=@END,
+                                                    DURATION=@DURN,
+                                                    COMMENT=@COMMENTS
                                             WHERE ID=@ID";
-            var updateRecordEndTimeCommandSQL = @$"UPDATE {this.table_name} SET END_TIME=@END
-                                            WHERE ID=@ID";
-            var updateRecordDurationCommandSQL = @$"UPDATE {this.table_name} SET DURATION=@DURN
-                                            WHERE ID=@ID";
-            var updateRecordCommentsCommandSQL = @$"UPDATE {this.table_name} SET COMMENT=@COMMENTS
-            WHERE ID=@ID";
             var parameters = new DynamicParameters();
             parameters.Add("@ID", sessionID);
             parameters.Add("@START", newStartTime);
-            conn.Execute(updateRecordStartTimeCommandSQL, parameters);
             parameters.Add("@END", newEndTime);
-            conn.Execute(updateRecordEndTimeCommandSQL, parameters);
             parameters.Add("@DURN", newDuration);
-            conn.Execute(updateRecordDurationCommandSQL, parameters);
             parameters.Add("@COMMENTS", comments);
-            conn.Execute(updateRecordCommentsCommandSQL, parameters);
+            conn.Execute(updateRecordCommandSQL, parameters);
         }
     }
 }
