@@ -49,7 +49,8 @@ namespace coding_tracker.Models
             TimeOnly startTime = SessionPrompt.PromptTimeFromUser(promptStartTimeToggle: true, sessionDate: dt);
             DateTime fullStartTime =DateTime.Parse($"{dt} {startTime}");
             TimeOnly endTime = SessionPrompt.PromptTimeFromUser(promptStartTimeToggle: false, sessionDate: dt);
-            DateTime fullEndTime =DateTime.Parse($"{dt} {endTime}");
+            // if end time < start time, user worked overnight after 12 so add date by 1
+            DateTime fullEndTime = DateTime.Parse($"{(endTime < startTime ? dt.AddDays(1) : dt)} {endTime}");
             string comments = SessionPrompt.PromptCommentsFromUser();
             dbConnector.InsertRecordIntoTable(fullStartTime, fullEndTime, 
                                                 CodingSession.GetTimeSpan(fullStartTime, fullEndTime),

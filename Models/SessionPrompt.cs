@@ -33,7 +33,7 @@ namespace coding_tracker.Models
             string timing = promptStartTimeToggle ? "start" : "end";
             while (true) {
                 string? start_time = AnsiConsole.Prompt(new TextPrompt<string>(
-                            $"Enter the [green]{timing} time[/] of the coding session [green](hh:mm)[/]: ")
+                            $"Enter the [green]{timing} time[/] of the coding session [green](hh:mm in 24 hour format)[/]: ")
                             .AllowEmpty());
                 if (UserInputValidator.IsValidInputTime(start_time) && 
                     UserInputValidator.IsValidInputDateAndTime(sessionDate, TimeOnly.Parse(start_time))) {

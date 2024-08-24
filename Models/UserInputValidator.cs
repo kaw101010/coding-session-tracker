@@ -11,7 +11,7 @@ namespace coding_tracker.Models
 
         public static bool IsValidInputTime(string? time)
         {
-            return TimeOnly.TryParse(time, out TimeOnly t) && t <= TimeOnly.FromDateTime(DateTime.Now);
+            return TimeOnly.TryParse(time, out TimeOnly t);
         }
 
         public static bool IsValidInputDateAndTime(DateOnly currDate, TimeOnly currTime)
