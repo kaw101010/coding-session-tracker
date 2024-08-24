@@ -12,7 +12,7 @@ class Program
         bool codingNow = SessionManager.IsUserCodingCurrently(databaseConnector);
         databaseConnector.OpenConnection();
         if (databaseConnector.DatabaseNotConnected()) {
-            UserInputValidator.DisplayMessage("Error connecting to database...");
+            DataVisualController.DisplayMessage("Error connecting to database...Please try again");
             return;
         }
 
@@ -30,7 +30,10 @@ class Program
                     .PageSize(10)
                     .MoreChoicesText("[grey](Move up and down to reveal more options)[/]")
                     .AddChoices(choices));
-                        
+
+            if (choice != "Quit") {
+                DataVisualController.RenderSelectedChoice(choice);
+            }
             switch (choices.IndexOf(choice)) {
                 case (int)Options.StartOrEndSession:
                     SessionManager.ToggleCodingSession(databaseConnector, codingNow);
@@ -49,11 +52,8 @@ class Program
                     SessionManager.ViewSession(databaseConnector);
                     break;
                 case (int)Options.Quit:
+                    DataVisualController.RenderSelectedChoice("GoodBye :)");
                     flag = true;
-                    var rule = new Rule("\n[yellow bold]Goodbye :)[/]\n");
-                    rule.RuleStyle("yellow");
-                    rule.Border(BoxBorder.Ascii);
-                    AnsiConsole.Write(rule);
                     break;
             }
         }

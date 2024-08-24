@@ -25,13 +25,13 @@ namespace coding_tracker.Models
                             return 0;
                         });
                 t.Wait();
-                UserInputValidator.DisplayMessage("[red]Session Complete![/]\n");
+                DataVisualController.DisplayMessage("[red]Session Complete![/]\n");
             }
             else {
                 // start a user sesh
                 DateTime currDateTime = DateTime.Now;
                 dbConnector.InsertRecordIntoTable(currDateTime, null, null, null);
-                UserInputValidator.DisplayMessage("[red]Session Started, have fun coding![/]\n");
+                DataVisualController.DisplayMessage("[red]Session Started, have fun coding![/]\n");
             }
         }
 
@@ -51,7 +51,7 @@ namespace coding_tracker.Models
             dbConnector.InsertRecordIntoTable(fullStartTime, fullEndTime, 
                                                 CodingSession.GetTimeSpan(fullStartTime, fullEndTime),
                                                 comments);
-            UserInputValidator.DisplayMessage("[red]Session Logged! Well done![/]\n");
+            DataVisualController.DisplayMessage("[red]Session Logged! Well done![/]\n");
         }
 
         public static void UpdateSession(DatabaseConnector dbConnector)
@@ -67,6 +67,8 @@ namespace coding_tracker.Models
             DateOnly dt = SessionPrompt.PromptDateFromUser();
             List<CodingSession> codeSessions = dbConnector.GetSessionsOnDate(dt);
             DataVisualController.VisualizeCodingSessionsInTable(codeSessions, dt);
+            int IdOfSession = SessionPrompt.PromptIdOfSession(codeSessions, updateIfTrueElseDelete: true);
+            // dbConnector.DeleteRecordFromTable(IdOfSession);
         }
 
         public static void ViewSession(DatabaseConnector dbConnector)

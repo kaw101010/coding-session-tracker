@@ -44,7 +44,7 @@ namespace coding_tracker.Models
         public static void RenderSelectedChoice(string selectedChoice)
         {
             var rule = new Rule($"\n[yellow bold]{selectedChoice}[/]\n");
-            rule.RuleStyle("yellow");
+            rule.RuleStyle(new Style(Color.Yellow, background: Color.Green, decoration: Decoration.Invert));
             rule.Border(BoxBorder.Ascii);
             AnsiConsole.Write(rule);
         }
@@ -57,6 +57,12 @@ namespace coding_tracker.Models
             panel.Border(BoxBorder.Double);
             panel.BorderColor(Color.Yellow);
             AnsiConsole.Write(panel);
+        }
+
+        public static void DisplayMessage(string message)
+        {
+            AnsiConsole.MarkupLine($"[red]{message}[/]");
+            return;
         }
     }
 }

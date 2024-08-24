@@ -20,10 +20,18 @@ namespace coding_tracker.Models
             return d <= DateTime.Now;
         }
 
-        public static void DisplayMessage(string message)
+        public static bool IsSessionIdValid(string? id)
         {
-            AnsiConsole.MarkupLine($"[red]{message}[/]");
-            return;
+            return int.TryParse(id, out int sessionID);
+        }
+
+        public static IEnumerable<int> IdInSessionsList(List<CodingSession> sessions, int idToSearch)
+        {
+            IEnumerable<int> intSearchQuery = 
+                    from s in sessions
+                    where s.Id == idToSearch
+                    select s.Id;
+            return intSearchQuery;
         }
 
     }

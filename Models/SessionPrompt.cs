@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using Dapper;
 using Spectre.Console;
 
 namespace coding_tracker.Models
@@ -18,7 +19,7 @@ namespace coding_tracker.Models
                     return DateOnly.Parse(date);
                 }
                 else {
-                    UserInputValidator.DisplayMessage("Invalid Date Format!");
+                    DataVisualController.DisplayMessage("Invalid Date Format!");
                 }
             }
         }
@@ -40,7 +41,26 @@ namespace coding_tracker.Models
                     return TimeOnly.Parse(start_time);
                 }
                 else {
-                    UserInputValidator.DisplayMessage("Invalid Time Format!");
+                    DataVisualController.DisplayMessage("Invalid Time Format!");
+                }
+            }
+        }
+
+        public static int PromptIdOfSession(List<CodingSession> sessions, bool updateIfTrueElseDelete = true) {
+            while (true) {
+                string? sessionID = AnsiConsole.Prompt(new TextPrompt<string>(
+                            $@"Enter the [green]ID[/] of the coding session you want to 
+                            {(updateIfTrueElseDelete ? "update": "delete")}: ")
+                            .AllowEmpty());
+                if (UserInputValidator.IsSessionIdValid(sessionID)) {
+                    int intSessionID = int.Parse(sessionID);
+                    IEnumerable<int> SearchQuery = UserInputValidator.IdInSessionsList(sessions, intSessionID);
+                    if (SearchQuery.Any()) {
+                        return SearchQuery.Single();
+                    }
+                }
+                else {
+                    DataVisualController.DisplayMessage("Incorrect Session ID!");
                 }
             }
         }
