@@ -41,6 +41,14 @@ namespace coding_tracker.Models
             AnsiConsole.Write(table.Centered());
         }
 
+        public static void RenderSelectedChoice(string selectedChoice)
+        {
+            var rule = new Rule($"\n[yellow bold]{selectedChoice}[/]\n");
+            rule.RuleStyle("yellow");
+            rule.Border(BoxBorder.Ascii);
+            AnsiConsole.Write(rule);
+        }
+
         public static void DisplayHeading()
         {
             var panel = new Panel(new FigletText("CODING TRACKER")

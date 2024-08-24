@@ -64,6 +64,9 @@ namespace coding_tracker.Models
         {
             // ask user for date, show all times and ask which time, or times
             // delete all values in db
+            DateOnly dt = SessionPrompt.PromptDateFromUser();
+            List<CodingSession> codeSessions = dbConnector.GetSessionsOnDate(dt);
+            DataVisualController.VisualizeCodingSessionsInTable(codeSessions, dt);
         }
 
         public static void ViewSession(DatabaseConnector dbConnector)
