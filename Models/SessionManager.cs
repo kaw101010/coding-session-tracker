@@ -67,8 +67,12 @@ namespace coding_tracker.Models
             DateOnly dt = SessionPrompt.PromptDateFromUser();
             List<CodingSession> codeSessions = dbConnector.GetSessionsOnDate(dt);
             DataVisualController.VisualizeCodingSessionsInTable(codeSessions, dt);
-            int IdOfSession = SessionPrompt.PromptIdOfSession(codeSessions, updateIfTrueElseDelete: true);
-            // dbConnector.DeleteRecordFromTable(IdOfSession);
+            if (codeSessions.Count < 1)
+            {
+                return;   
+            }
+            int IdOfSession = SessionPrompt.PromptIdOfSession(codeSessions, updateIfTrueElseDelete: false);
+            dbConnector.DeleteRecordFromTable(IdOfSession);
         }
 
         public static void ViewSession(DatabaseConnector dbConnector)

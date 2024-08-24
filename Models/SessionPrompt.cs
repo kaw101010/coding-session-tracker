@@ -58,9 +58,12 @@ namespace coding_tracker.Models
                     if (SearchQuery.Any()) {
                         return SearchQuery.Single();
                     }
+                    else {
+                        DataVisualController.DisplayMessage("[red]Session ID does not exist![/]");
+                    }
                 }
                 else {
-                    DataVisualController.DisplayMessage("Incorrect Session ID!");
+                    DataVisualController.DisplayMessage("Invalid Session ID!");
                 }
             }
         }

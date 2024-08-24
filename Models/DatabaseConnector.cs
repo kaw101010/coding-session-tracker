@@ -123,6 +123,7 @@ namespace coding_tracker.Models
                         x.START_TIME = DateTime.Parse(x.START_TIME);
                         var session = new CodingSession
                         {
+                            Id = (int)x.ID,
                             StartTime = x.START_TIME,
                             EndTime = x.END_TIME,
                             Duration = x.DURATION,
@@ -134,6 +135,13 @@ namespace coding_tracker.Models
                     .ToList();
             }
             return codingSessions;
+        }
+
+        public void DeleteRecordFromTable(int sessionID) {
+            var conn = this.Connection;
+            var deleteRecordCommandSQL = @$"DELETE FROM {this.table_name} WHERE ID = {sessionID}";
+            conn.Execute(deleteRecordCommandSQL);
+            Console.WriteLine("Session Deleted!");
         }
     }
 }
