@@ -65,7 +65,20 @@ namespace coding_tracker.Models
             {
                 return;
             }
-            int IdOfSession = SessionPrompt.PromptIdOfSession(codeSessions, updateIfTrueElseDelete: false);
+            int IdOfSession = SessionPrompt.PromptIdOfSession(codeSessions, updateIfTrueElseDelete: true);
+            if (IdOfSession == -1)
+            {
+                return;
+            }
+            TimeOnly newStartTime = SessionPrompt.PromptTimeFromUser(dt,promptStartTimeToggle: true);
+            TimeOnly newEndTime = SessionPrompt.PromptTimeFromUser(dt,promptStartTimeToggle: false);
+            DateTime newStart = DateTime.Parse($"{dt:dd-MM-yyyy} {newStartTime}");
+            DateTime newEnd = DateTime.Parse($"{dt:dd-MM-yyyy} {newEndTime}");
+            TimeSpan newDuration = CodingSession.GetTimeSpan(newStart, newEnd);
+            string comments = SessionPrompt.PromptCommentsFromUser();
+            // update record with id
+            dbConnector.UpdateRecordInTableWithID(IdOfSession, newStart.ToString(), newEnd.ToString(), 
+                                                newDuration.ToString(), comments);
             DataVisualController.DisplayMessage("[red]Session Updated![/]\n");
         }
 
@@ -81,6 +94,10 @@ namespace coding_tracker.Models
                 return;
             }
             int IdOfSession = SessionPrompt.PromptIdOfSession(codeSessions, updateIfTrueElseDelete: false);
+            if (IdOfSession == -1)
+            {
+                return;
+            }
             dbConnector.DeleteRecordFromTable(IdOfSession);
             DataVisualController.DisplayMessage("[red]Session Deleted![/]\n");
         }

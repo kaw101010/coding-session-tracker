@@ -1,6 +1,7 @@
 using System.Configuration;
 using System.Data;
 using System.Data.SQLite;
+using System.Globalization;
 using Dapper;
 using Spectre.Console;
 
@@ -145,15 +146,30 @@ namespace coding_tracker.Models
             conn.Execute(deleteRecordCommandSQL, parameters);
         }
 
-        public void UpdateRecordInTableWithID(int sessionID, DateTime newStartTime, DateTime newEndTime) {
+        public void UpdateRecordInTableWithID(int sessionID, 
+                                            string newStartTime,
+                                            string newEndTime,
+                                            string newDuration,
+                                            string comments) {
             var conn = this.Connection;
-            var updateRecordCommandSQL = @$"UPDATE {this.table_name} SET START_TIME=@START AND END_TIME=@END
+            var updateRecordStartTimeCommandSQL = @$"UPDATE {this.table_name} SET START_TIME=@START
                                             WHERE ID=@ID";
+            var updateRecordEndTimeCommandSQL = @$"UPDATE {this.table_name} SET END_TIME=@END
+                                            WHERE ID=@ID";
+            var updateRecordDurationCommandSQL = @$"UPDATE {this.table_name} SET DURATION=@DURN
+                                            WHERE ID=@ID";
+            var updateRecordCommentsCommandSQL = @$"UPDATE {this.table_name} SET COMMENT=@COMMENTS
+            WHERE ID=@ID";
             var parameters = new DynamicParameters();
-            parameters.Add("@START", newStartTime);
-            parameters.Add("@END", newEndTime);
             parameters.Add("@ID", sessionID);
-            conn.Execute(updateRecordCommandSQL, parameters);
+            parameters.Add("@START", newStartTime);
+            conn.Execute(updateRecordStartTimeCommandSQL, parameters);
+            parameters.Add("@END", newEndTime);
+            conn.Execute(updateRecordEndTimeCommandSQL, parameters);
+            parameters.Add("@DURN", newDuration);
+            conn.Execute(updateRecordDurationCommandSQL, parameters);
+            parameters.Add("@COMMENTS", comments);
+            conn.Execute(updateRecordCommentsCommandSQL, parameters);
         }
     }
 }

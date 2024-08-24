@@ -53,10 +53,15 @@ namespace coding_tracker.Models
                 if (UserInputValidator.IsSessionIdValid(sessionID)) {
                     int intSessionID = int.Parse(sessionID);
                     IEnumerable<int> SearchQuery = UserInputValidator.IdInSessionsList(sessions, intSessionID);
-                    if (SearchQuery.Any()) {
+                    if (SearchQuery.Any() && sessions.Count > 1) {
                         return SearchQuery.Single();
                     }
+                    else if (sessions.Count <= 1) {
+                        DataVisualController.DisplayMessage("[red]No complete coding sessions have been logged[/]");
+                        return -1;
+                    }
                     else {
+                        System.Console.WriteLine(sessions.Count - SearchQuery.Count());
                         DataVisualController.DisplayMessage("[red]Session ID does not exist or session is still running![/]");
                     }
                 }
