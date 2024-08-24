@@ -26,7 +26,7 @@ class Program
                 "Quit"];
             var choice = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
-                    .Title("[green bold]What do you want to do?[/]")
+                    .Title("\n[green bold]What do you want to do?[/]")
                     .PageSize(10)
                     .MoreChoicesText("[grey](Move up and down to reveal more options)[/]")
                     .AddChoices(choices));
@@ -50,13 +50,10 @@ class Program
                     break;
                 case (int)Options.Quit:
                     flag = true;
-                    var rule = new Rule("[yellow bold]Goodbye :)[/]");
+                    var rule = new Rule("\n[yellow bold]Goodbye :)[/]\n");
                     rule.RuleStyle("yellow");
                     rule.Border(BoxBorder.Ascii);
                     AnsiConsole.Write(rule);
-                    break;
-                default:
-                    UserInputValidator.DisplayMessage("Enter a valid option please!");
                     break;
             }
         }

@@ -7,12 +7,17 @@ namespace coding_tracker.Models
     {
         public static void VisualizeCodingSessionsInTable(List<CodingSession> codingSessions, DateOnly sessionDate) {
             if (codingSessions.Count < 1) {
-                var noCodeSessions = new Text($"No coding sessions on {sessionDate}\n\n");
+                var noCodeSessions = new Text($"\nNo coding sessions on {sessionDate}\n",
+                            style: new Style(Color.Aqua,background: Color.Blue,decoration: Decoration.Bold))
+                            .Centered();
                 AnsiConsole.Write(noCodeSessions);
                 return;
             }
             string _dateTimeFormat = "MM/dd/yyyy hh:mm tt";
             var table = new Table();
+            table.Title($"\n[bold yellow]Code Sessions on {sessionDate}[/]", 
+                        style: new Style(Color.Aqua,background: Color.Blue))
+                        .Centered();
             table.AddColumn(new TableColumn("[yellow]ID[/]").Centered());
             table.AddColumn(new TableColumn("[yellow]Start Time[/]").Centered());
             table.AddColumn(new TableColumn("[yellow]End Time[/]").Centered());

@@ -1,7 +1,3 @@
-using System.Data.SQLite;
-using System.Runtime.CompilerServices;
-using Spectre.Console;
-
 namespace coding_tracker.Models
 {
     public class SessionManager
@@ -12,13 +8,6 @@ namespace coding_tracker.Models
 
         public static void ToggleCodingSession(DatabaseConnector dbConnector, bool isUserCoding)
         {
-            // simulate a waiting time of 250 ms
-            var t = Task.Run(async delegate
-                    {
-                        await Task.Delay(250);
-                        return 0;
-                    });
-            t.Wait();
             if (isUserCoding) {
                 // end current user session
                 DateTime EndSessionDateTime = DateTime.Now;
@@ -29,6 +18,13 @@ namespace coding_tracker.Models
                                 { "comment", comments }
                             };
                 dbConnector.UpdateRecordAndEndSession(columnsToUpdate);
+                // simulate a waiting time of 250 ms
+                var t = Task.Run(async delegate
+                        {
+                            await Task.Delay(500);
+                            return 0;
+                        });
+                t.Wait();
                 UserInputValidator.DisplayMessage("[red]Session Complete![/]\n");
             }
             else {
