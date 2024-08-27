@@ -1,4 +1,4 @@
-﻿using coding_tracker.Models;
+﻿using coding_tracker.Controllers;
 
 class Program
 {

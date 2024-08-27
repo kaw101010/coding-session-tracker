@@ -1,6 +1,7 @@
+using coding_tracker.Models;
 using Spectre.Console;
 
-namespace coding_tracker.Models
+namespace coding_tracker.Validators
 {
     class UserInputValidator
     {

@@ -1,6 +1,9 @@
+using coding_tracker.Controllers;
+using coding_tracker.Models;
+using coding_tracker.Validators;
 using Spectre.Console;
 
-namespace coding_tracker.Models
+namespace coding_tracker.Managers
 {
     class SessionPrompt
     {

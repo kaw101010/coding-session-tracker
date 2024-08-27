@@ -1,11 +1,11 @@
 using System.Configuration;
 using System.Data;
 using System.Data.SQLite;
-using System.Globalization;
+using coding_tracker.Models;
 using Dapper;
 using Spectre.Console;
 
-namespace coding_tracker.Models
+namespace coding_tracker.Repositories
 {
     public class DatabaseConnector
     {

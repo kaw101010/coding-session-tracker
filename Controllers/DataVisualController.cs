@@ -1,7 +1,7 @@
-using Dapper;
+using coding_tracker.Models;
 using Spectre.Console;
 
-namespace coding_tracker.Models
+namespace coding_tracker.Controllers
 {
     class DataVisualController
     {
@@ -29,7 +29,7 @@ namespace coding_tracker.Models
                     from session in codingSessions
                     orderby session.Duration descending
                     select session;
-            orderedCodingSessions.AsList().ForEach((session) => {
+            orderedCodingSessions.ToList().ForEach((session) => {
                 table.AddRow(
                                 // show id in blue if session is still going on, else show
                                 $"[{(session.EndTime != null ? "red" : "blue")}]{session.Id}[/]",

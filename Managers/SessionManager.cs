@@ -1,4 +1,8 @@
-namespace coding_tracker.Models
+using coding_tracker.Controllers;
+using coding_tracker.Models;
+using coding_tracker.Repositories;
+
+namespace coding_tracker.Managers
 {
     public class SessionManager
     {
